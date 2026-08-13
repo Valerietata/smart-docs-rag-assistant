@@ -1,4 +1,8 @@
-def split_text(text: str, chunk_size: int = 100) -> list[str]:
+def split_text(
+    text: str,
+    chunk_size: int = 100,
+    overlap: int = 20,
+) -> list[str]:
     chunks = []
     start = 0
 
@@ -15,7 +19,16 @@ def split_text(text: str, chunk_size: int = 100) -> list[str]:
 
         if chunk:
             chunks.append(chunk)
+        if end == len(text):
+            break
 
-        start = end
+        next_start = max(end - overlap, start + 1)
+
+        last_space = text.rfind(" ", start, next_start)
+
+        if last_space > start:
+            next_start = last_space + 1
+
+        start = next_start
 
     return chunks
