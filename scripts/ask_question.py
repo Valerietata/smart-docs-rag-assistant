@@ -15,7 +15,7 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    answer = ask_question(args.question)
+    result = ask_question(args.question)
 
     print()
     print("QUESTION")
@@ -23,7 +23,17 @@ def main() -> None:
 
     print()
     print("ANSWER")
-    print(answer)
+    print(result["answer"])
+
+    print()
+    print("SOURCES")
+
+    for source in result["sources"]:
+        print(
+            f'{source["label"]} '
+            f'{source["source"]} '
+            f'— chunk {source["chunk_index"]}'
+        )
 
 
 if __name__ == "__main__":
