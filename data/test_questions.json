@@ -1,0 +1,17 @@
+[
+  {
+    "question": "How many days of annual leave do employees receive?",
+    "expected_answer": "20 days",
+    "expected_chunk_index": 0
+  },
+  {
+    "question": "How early should annual leave requests be submitted?",
+    "expected_answer": "10 business days in advance",
+    "expected_chunk_index": 1
+  },
+  {
+    "question": "How many days per week can employees work remotely?",
+    "expected_answer": "2 days per week",
+    "expected_chunk_index": 2
+  }
+]
