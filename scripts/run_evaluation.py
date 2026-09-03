@@ -1,4 +1,5 @@
 from backend.app.evaluation import (
+    evaluate_end_to_end,
     evaluate_generation,
     evaluate_retrieval,
 )
@@ -50,6 +51,29 @@ def main() -> None:
     print()
 
     for item in generation_result["results"]:
+        status = "PASS" if item["passed"] else "FAIL"
+
+        print(f'{status} - {item["question"]}')
+        print(f'Expected: {item["expected_answer"]}')
+        print(f'Generated: {item["generated_answer"]}')
+        print("-" * 50)
+    
+    end_to_end_result = evaluate_end_to_end(
+        test_file="data/test_questions.json",
+    )
+
+    print()
+    print("END-TO-END EVALUATION")
+    print("=" * 50)
+    print(
+        f'Accuracy: {end_to_end_result["passed"]}/'
+        f'{end_to_end_result["total"]} '
+        f'({end_to_end_result["accuracy"]:.0%})'
+    )
+
+    print()
+
+    for item in end_to_end_result["results"]:
         status = "PASS" if item["passed"] else "FAIL"
 
         print(f'{status} - {item["question"]}')

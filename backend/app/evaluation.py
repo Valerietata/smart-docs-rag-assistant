@@ -6,6 +6,7 @@ from backend.app.document_loader import load_text_file
 from backend.app.generation import generate_answer
 from backend.app.retrieval import retrieve
 
+from backend.app.rag import ask_question
 
 def evaluate_retrieval(
     test_file: str,
@@ -83,6 +84,49 @@ def evaluate_generation(
             question=question,
             context=context,
         )
+
+        is_correct = (
+            expected_answer.lower()
+            in generated_answer.lower()
+        )
+
+        if is_correct:
+            passed += 1
+
+        results.append(
+            {
+                "question": question,
+                "expected_answer": expected_answer,
+                "generated_answer": generated_answer,
+                "passed": is_correct,
+            }
+        )
+
+    accuracy = passed / len(test_cases)
+
+    return {
+        "accuracy": accuracy,
+        "passed": passed,
+        "total": len(test_cases),
+        "results": results,
+    }
+
+def evaluate_end_to_end(
+    test_file: str,
+) -> dict:
+    with open(test_file, "r", encoding="utf-8") as file:
+        test_cases = json.load(file)
+
+    passed = 0
+    results = []
+
+    for test_case in test_cases:
+        question = test_case["question"]
+        expected_answer = test_case["expected_answer"]
+
+        rag_result = ask_question(question)
+
+        generated_answer = rag_result["answer"]
 
         is_correct = (
             expected_answer.lower()
