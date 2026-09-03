@@ -1,0 +1,13 @@
+[project]
+name = "smart-docs-rag-assistant"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.5.9",
+    "fastapi>=0.141.1",
+    "openai==3.1.0",
+    "pypdf>=6.16.2",
+    "pytest>=9.1.1",
+    "python-dotenv>=1.2.3",
+    "uvicorn>=0.52.4",
+]
