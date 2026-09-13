@@ -5,6 +5,7 @@ from backend.app.rag import ask_question
 from fastapi import FastAPI, File, UploadFile
 from uuid import uuid4
 from backend.app.document_loader import decode_text_content
+from backend.app.chunking import create_document_chunks
 app = FastAPI()
 
 class QuestionRequest(BaseModel):
@@ -36,6 +37,10 @@ def upload_document(
 ) -> dict:
     content = file.file.read()
     text = decode_text_content(content)
+    chunks = create_document_chunks(
+    text=text,
+    source=file.filename,
+)
     document_id = str(uuid4())
 
     return {
@@ -43,4 +48,5 @@ def upload_document(
         "filename": file.filename,
         "size_bytes": len(content),
         "text_length": len(text),
+        "chunk_count": len(chunks),
     }
