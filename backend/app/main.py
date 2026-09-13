@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from backend.app.rag import ask_question
 from fastapi import FastAPI, File, UploadFile
+from uuid import uuid4
 app = FastAPI()
 
 class QuestionRequest(BaseModel):
@@ -34,7 +35,10 @@ def upload_document(
 ) -> dict:
     content = file.file.read()
 
+    document_id = str(uuid4())
+
     return {
+        "document_id": document_id,
         "filename": file.filename,
         "size_bytes": len(content),
     }
