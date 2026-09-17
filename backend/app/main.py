@@ -1,12 +1,11 @@
-from fastapi import FastAPI
 from pydantic import BaseModel
-
 from backend.app.rag import ask_question
 from fastapi import FastAPI, File, UploadFile
 from uuid import uuid4
 from backend.app.document_loader import decode_text_content
 from backend.app.chunking import create_document_chunks
 from backend.app.embeddings import create_embeddings
+from backend.app.vector_store import add_chunks
 app = FastAPI()
 
 class QuestionRequest(BaseModel):
@@ -46,7 +45,12 @@ def upload_document(
     [chunk.text for chunk in chunks]
 )
     document_id = str(uuid4())
-
+    
+    add_chunks(
+    chunks=chunks,
+    embeddings=embeddings,
+    document_id=document_id,
+)
     return {
     "document_id": document_id,
     "filename": file.filename,

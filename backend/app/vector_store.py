@@ -12,10 +12,11 @@ collection = client.get_or_create_collection(
 def add_chunks(
     chunks: list[DocumentChunk],
     embeddings: list[list[float]],
+    document_id: str,
 ) -> None:
     collection.add(
         ids=[
-            f"{chunk.source}-{chunk.chunk_index}"
+            f"{document_id}-{chunk.chunk_index}"
             for chunk in chunks
         ],
         documents=[
@@ -25,6 +26,7 @@ def add_chunks(
         embeddings=embeddings,
         metadatas=[
             {
+                "document_id": document_id,
                 "source": chunk.source,
                 "chunk_index": chunk.chunk_index,
             }
